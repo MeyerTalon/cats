@@ -1,5 +1,5 @@
 """Typing test implementation"""
-
+from tests.construct_check import check
 from utils import (
     lower,
     split,
@@ -37,7 +37,13 @@ def pick(paragraphs, select, k):
     ''
     """
     # BEGIN PROBLEM 1
-    "*** YOUR CODE HERE ***"
+    solutions = []
+    for p in paragraphs:
+        if select(p):
+            solutions.append(p)
+    if len(solutions) <= k:
+        return ''
+    return solutions[k]
     # END PROBLEM 1
 
 
@@ -57,7 +63,16 @@ def about(subject):
     assert all([lower(x) == x for x in subject]), "subjects should be lowercase."
 
     # BEGIN PROBLEM 2
-    "*** YOUR CODE HERE ***"
+    def check_subject(paragraph):
+        paragraph = lower(paragraph)
+        paragraph = remove_punctuation(paragraph)
+        word_list = split(paragraph)
+        for s in subject:
+            if s in word_list:
+                return True
+        return False
+
+    return check_subject
     # END PROBLEM 2
 
 
@@ -87,7 +102,24 @@ def accuracy(typed, source):
     typed_words = split(typed)
     source_words = split(source)
     # BEGIN PROBLEM 3
-    "*** YOUR CODE HERE ***"
+
+    # Check edge case that source is empty string.
+    if source == "" and typed == "":
+        return 100.0
+    elif source == "":
+        return 0.0
+    elif typed == "":
+        return 0.0
+
+    correct_count = 0
+    for i in range(len(typed_words)):
+        if i >= len(source_words):
+            break
+
+        if typed_words[i] == source_words[i]:
+            correct_count += 1
+
+    return correct_count / len(typed_words) * 100
     # END PROBLEM 3
 
 
@@ -105,7 +137,7 @@ def wpm(typed, elapsed):
     """
     assert elapsed > 0, "Elapsed time must be positive"
     # BEGIN PROBLEM 4
-    "*** YOUR CODE HERE ***"
+    return (len(typed) / 5) / (elapsed / 60)
     # END PROBLEM 4
 
 
