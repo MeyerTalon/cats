@@ -248,7 +248,6 @@ def furry_fixes(typed, source, limit):
 
     # END PROBLEM 6
 
-
 def minimum_mewtations(typed, source, limit):
     """A diff function for autocorrect that computes the edit distance from TYPED to SOURCE.
     This function takes in a string TYPED, a string SOURCE, and a number LIMIT.
@@ -329,7 +328,25 @@ def report_progress(typed, source, user_id, upload):
     0.2
     """
     # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
+    count_correct = 0
+    for i in range(len(typed)):
+        if i >= len(source):
+            break
+        elif typed[i] == source[i]:
+            count_correct += 1
+        else:
+            break
+
+    progress = count_correct / len(source)
+
+    report = {
+        'id': user_id,
+        'progress': progress
+    }
+
+    upload(report)
+
+    return progress
     # END PROBLEM 8
 
 
@@ -353,7 +370,7 @@ def time_per_word(words, timestamps_per_player):
     """
     tpp = timestamps_per_player  # A shorter name (for convenience)
     # BEGIN PROBLEM 9
-    times = []  # You may remove this line
+    times = [[nums[i + 1] - nums[i] for i in range(len(nums) - 1)] for nums in timestamps_per_player]  # You may remove this line
     # END PROBLEM 9
     return {'words': words, 'times': times}
 
@@ -380,7 +397,14 @@ def fastest_words(words_and_times):
     player_indices = range(len(times))  # contains an *index* for each player
     word_indices = range(len(words))    # contains an *index* for each word
     # BEGIN PROBLEM 10
-    "*** YOUR CODE HERE ***"
+    words_list = [[] for i in player_indices]
+    for i in word_indices:
+        word_times = [time[i] for time in times]
+        for player_idx in player_indices:
+            if times[player_idx][i] == min(word_times):
+                words_list[player_idx].append(words[i])
+                break
+    return words_list
     # END PROBLEM 10
 
 
